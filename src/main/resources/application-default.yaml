@@ -1,0 +1,52 @@
+spring:
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/backend-db?serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8&useOldAliasMetadataBehavior=true&useSSL=false&zeroDateTimeBehavior=convertToNull
+    username: root
+    password: Root2018
+    driverClassName: com.mysql.cj.jdbc.Driver
+    druid:
+      initialSize: 5
+      minIdle: 5
+      maxActive: 100
+      maxWait: 60000
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: SELECT 1
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      poolPreparedStatements: true
+      maxPoolPreparedStatementPerConnectionSize: 20
+      filters: stat,wall
+
+#  redis:
+#    host: 127.0.0.1
+#    port: 16379
+#    password: sunon
+#    database: 1
+#  cache:
+#    type: redis
+
+# ===========================================================================
+# 微信公众号和微信小程序相关配置
+# ===========================================================================
+# 微信公众号
+# 是否启用多机构多公众号
+weixin:
+  #
+  request-access-token-url: https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s
+  #
+  request-jsapi-ticket-url: https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=%s&type=jsapi
+  # 获取二维码
+  # https://developers.weixin.qq.com/miniprogram/dev/api/qrcode.html
+  request-mp-qr-code-url: https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=%s
+  # 获取临时多媒体素材
+  request-download-media-url: https://api.weixin.qq.com/cgi-bin/media/get?access_token=%s&media_id=%s
+# ===========================================================================
+# 小程序相关设置
+# ===========================================================================
+# 小程序对应的appId
+  mina-app-id: wxc1960f486e0b3362 #测试号
+  # 小程序对应的密钥
+  mina-app-secret: b9fe86a448ac8626f40cd696d3f37d0e #测试号
+  mina-code-to-session-url: https://api.weixin.qq.com/sns/jscode2session?appid=${weixin.mina-app-id}&secret=${weixin.mina-app-secret}&js_code=%s&grant_type=authorization_code

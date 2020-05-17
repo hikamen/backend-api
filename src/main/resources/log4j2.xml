@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration status="off" monitorInterval="1800">
+    <properties>
+        <property name="Pattern_Layout">%date{yyyy-MM-dd HH:mm:ss.SSS} %level [%thread][%file:%line] - %msg%n</property>
+        <property name="Triggering_Policy_Size">20M</property>
+        <Property name="LOG_PATH">logs</Property>
+    </properties>
+
+    <appenders>
+        <!-- 控制台输出 -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${Pattern_Layout}"/>
+        </Console>
+
+        <!-- 错误日志 -->
+        <RollingRandomAccessFile name="LOGGING_FILE" fileName="${LOG_PATH}/backend.log"
+                                 filePattern="${LOG_PATH}/backend.%d{yyyy-MM-dd-HH}.log">
+            <PatternLayout pattern="${Pattern_Layout}"/>
+            <SizeBasedTriggeringPolicy size="${Triggering_Policy_Size}"/>
+        </RollingRandomAccessFile>
+
+    </appenders>
+
+    <loggers>
+        <logger name="com.base.backend" level="DEBUG"/>
+        <logger name="org.springframework" level="WARN"/>
+        <logger name="org.apache.ibatis" level="DEBUG"/>
+        <logger name="com.baomidou.mybatisplus" level="INFO"/>
+
+        <Root level="ERROR">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="LOGGING_FILE"/>
+        </Root>
+    </loggers>
+</configuration>
