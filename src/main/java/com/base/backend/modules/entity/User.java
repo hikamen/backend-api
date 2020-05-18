@@ -3,6 +3,8 @@ package com.base.backend.modules.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.base.backend.common.entity.IdEntity;
+import com.base.backend.modules.enums.GenderEnum;
+import com.base.backend.modules.enums.UserTypeEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -36,6 +38,9 @@ public class User extends IdEntity {
      */
     @TableField("name")
     private String name;
+
+    @TableField("gender")
+    private GenderEnum gender;
     /**
      * 手机号码
      */
@@ -65,9 +70,9 @@ public class User extends IdEntity {
     private LocalDateTime lastAccessTime;
 
     /**
-     * 是否管理员
+     * 用户类型
      */
-    @TableField("admin_ind")
-    private Integer adminInd;
+    @TableField("user_type")
+    private UserTypeEnum userType;
 
 }

@@ -20,9 +20,10 @@ CREATE TABLE t_user
     name             varchar(50)  DEFAULT '' NOT NULL COMMENT '名称',
     phone            varchar(30)  DEFAULT '' COMMENT '手机号码',
     code             varchar(100) DEFAULT '' COMMENT '编码',
+    gender           char(1)  default '' COMMENT '性别',
     active           tinyint      DEFAULT 1 COMMENT '是否启用,1-启用;0-不启用',
     password         varchar(200) DEFAULT '' COMMENT '密码',
-    admin_ind        tinyint      default 0 comment '是否管理员',
+    user_type        tinyint      default 0 comment '用户类型，0：普通用户， 1：管理员',
     last_access_time datetime COMMENT '最近访问时间',
     created_by       int          DEFAULT -1 NOT NULL COMMENT '创建人',
     created_time     datetime COMMENT '创建时间',
@@ -35,14 +36,9 @@ CREATE TABLE t_user
     index idx_code (`code`)
 ) COMMENT = '用户表';
 
-CREATE TABLE t_demo
-(
-    id    BIGINT(20)  NOT NULL COMMENT '主键ID',
-    name  VARCHAR(30) NULL DEFAULT NULL COMMENT '姓名',
-    age   INT(11)     NULL DEFAULT NULL COMMENT '年龄',
-    email VARCHAR(50) NULL DEFAULT NULL COMMENT '邮箱',
-    PRIMARY KEY (id)
-);
+-- 12345678
+insert into t_user (id, username, name, phone, code, gender, active, password, user_type) value (1, 'admin', '管理员', '13800138000', 'admin', 'U', 1, 'ef797c8118f02dfb649607dd5d3f8c7623048c9c063d532cc95c5ed7a898a64f', 1);
+
 
 
 

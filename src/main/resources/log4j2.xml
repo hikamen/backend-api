@@ -24,7 +24,7 @@
     <loggers>
         <logger name="com.base.backend" level="DEBUG"/>
         <logger name="org.springframework" level="WARN"/>
-        <logger name="org.apache.ibatis" level="DEBUG"/>
+        <logger name="org.apache.ibatis" level="WARN"/>
         <logger name="com.baomidou.mybatisplus" level="INFO"/>
 
         <Root level="ERROR">

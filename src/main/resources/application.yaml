@@ -1,5 +1,4 @@
 debug: false
-
 spring:
   main:
     allow-bean-definition-overriding: true
@@ -10,6 +9,10 @@ spring:
   resources:
     static-locations: classpath:/META-INF/resources/,classpath:/resources/,\
       classpath:/static/,classpath:/public/
+  profiles:
+    active: dev
+  jpa:
+    open-in-view: false
 
 server:
   port: 8082

@@ -5,6 +5,8 @@ import com.base.backend.core.interceptor.OauthInterceptor;
 import com.base.backend.core.web.WebArgumentResolver;
 import com.base.backend.core.web.listener.StartupListener;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -96,6 +98,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 break;
             }
         }
+    }
+
+    @Bean
+    public Jackson2ObjectMapperBuilderCustomizer customizer(){
+        return builder -> builder.featuresToEnable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING);
     }
 
     @Bean
