@@ -5,6 +5,7 @@ spring:
   jackson:
     time-zone: GMT+8
   mvc:
+    date-format: yyyy-MM-dd
     static-path-pattern: /**
   resources:
     static-locations: classpath:/META-INF/resources/,classpath:/resources/,\
@@ -13,9 +14,32 @@ spring:
     active: dev
   jpa:
     open-in-view: false
-
+#  aop:
+#    proxy-target-class: false
+  redis:
+    host: 39.97.251.229
+    port: 16379
+    password: Redis!@#123
+    database: 1
+    lettuce:
+      pool:
+        maxActive: 2048
+        maxIdle: 200
+        maxWait: 1500ms
+        minIdle: 20
 server:
   port: 8082
+  undertow:
+    accesslog:
+      enabled: false
+      dir: logs
+
+autoload:
+  cache:
+    config:
+      namespace: backend-api
+    enable: true
+    proxy-target-class: true
 
 mybatis-plus:
 # 如果是放在src/main/java目录下 classpath:/com/yourpackage/*/mapper/*Mapper.xml

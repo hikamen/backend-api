@@ -7,6 +7,7 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 import javax.servlet.Filter;
 import javax.servlet.Servlet;
@@ -19,6 +20,7 @@ import javax.servlet.Servlet;
  * @author kamen
  * @date 2020/5/17
  */
+@Profile("dev")
 @Configuration
 public class DruidConfig {
     /**

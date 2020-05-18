@@ -1,19 +1,29 @@
 spring:
   datasource:
     driver-class-name: com.p6spy.engine.spy.P6SpyDriver
-    schema: classpath:db/schema-h2.sql
-    data: classpath:db/data-h2.sql
-    url: jdbc:p6spy:h2:mem:test
+    schema: classpath:db/db.schema-h2.sql
+    data: classpath:db/db.data-h2.sql
+    url: jdbc:p6spy:h2:mem:test;MODE=MYSQL
     username: root
     password: test
+    druid:
+      db-type: h2
+      initialSize: 5
+      minIdle: 5
+      maxActive: 10
+      maxWait: 60000
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: SELECT 1
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      poolPreparedStatements: true
+      maxPoolPreparedStatementPerConnectionSize: 10
+      filters: stat,wall
+  aop:
+    proxy-target-class: false
 
-#  redis:
-#    host: 127.0.0.1
-#    port: 16379
-#    password: sunon
-#    database: 1
-#  cache:
-#    type: redis
 
 # ===========================================================================
 # 微信公众号和微信小程序相关配置
