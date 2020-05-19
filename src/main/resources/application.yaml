@@ -33,7 +33,11 @@ server:
     accesslog:
       enabled: false
       dir: logs
-
+logging:
+  file:
+    name: ./logs/backend.log
+  pattern:
+    file: '%d{${LOG_DATEFORMAT_PATTERN:-yyyy-MM-dd HH:mm:ss.SSS}} ${LOG_LEVEL_PATTERN:-%5p} ${PID:- } --- [%t] [%-40.40logger{39}:%line] : %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}'
 autoload:
   cache:
     config:

@@ -24,7 +24,7 @@ public class MpGeneratorTest {
 
     @Test
     public void generateCode() {
-        generate("", "t_demo" );
+        generate("", "t_user" );
     }
 
     private void generate(String moduleName, String... tableNamesInclude){
@@ -33,7 +33,7 @@ public class MpGeneratorTest {
         // 全局配置
         GlobalConfig gc = new GlobalConfig();
         String projectPath = System.getProperty("user.dir");
-        gc.setOutputDir(projectPath + "/src/main/java");
+        gc.setOutputDir(projectPath + "/src/main/java2");
         gc.setAuthor("Kamen");
         gc.setOpen(false);
         //默认不覆盖，如果文件存在，将不会再生成，配置true就是覆盖
@@ -44,9 +44,9 @@ public class MpGeneratorTest {
         DataSourceConfig dsc = new DataSourceConfig();
         dsc.setUrl("jdbc:mysql://39.97.251.229:3306/backend-db?useUnicode=true&useSSL=false&characterEncoding=utf8&serverTimezone=GMT%2B8");
         // dsc.setSchemaName("public");
-        dsc.setDriverName("com.mysql.jdbc.Driver");
-        dsc.setUsername("root");
-        dsc.setPassword("Root2018");
+        dsc.setDriverName("com.mysql.cj.jdbc.Driver");
+        dsc.setUsername("test");
+        dsc.setPassword("1q2w3e4r");
         mpg.setDataSource(dsc);
 
         // 包配置

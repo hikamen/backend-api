@@ -3,6 +3,7 @@ spring:
     driver-class-name: com.p6spy.engine.spy.P6SpyDriver
     schema: classpath:db/db.schema-h2.sql
     data: classpath:db/db.data-h2.sql
+#    url: jdbc:p6spy:h2:~/test;MODE=MYSQL
     url: jdbc:p6spy:h2:mem:test;MODE=MYSQL
     username: root
     password: test
@@ -15,16 +16,19 @@ spring:
       timeBetweenEvictionRunsMillis: 60000
       minEvictableIdleTimeMillis: 300000
       validationQuery: SELECT 1
-      testWhileIdle: true
+      testWhileIdle: false
       testOnBorrow: false
       testOnReturn: false
       poolPreparedStatements: true
       maxPoolPreparedStatementPerConnectionSize: 10
       filters: stat,wall
-  aop:
-    proxy-target-class: false
 
 
+logging:
+  file:
+    clean-history-on-start: true
+  level:
+    web: DEBUG
 # ===========================================================================
 # 微信公众号和微信小程序相关配置
 # ===========================================================================

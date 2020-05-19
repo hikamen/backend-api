@@ -36,7 +36,7 @@ CREATE TABLE t_user
     index idx_code (`code`)
 ) COMMENT = '用户表';
 
--- 12345678
+-- 12345678  sha256+base64 -> eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiIzZmJlN2M1ZC1mZTk2LTRmYmQtYmI1NS03Njk4NDAyMDAzYWQiLCJzdWIiOiJhZG1pbiIsImlhdCI6MTU4OTg1MTIwNCwiZXhwIjoxNTg5OTM3NjA0fQ.jxwH88Y6S8uOGR0XAwB243u8k5-BxvV0Xtw44hPU8BIuQFtUWuXaTMNE17NX_lpP0bG8k8gNesPzEe1PxPe8tg
 insert into t_user (id, username, name, phone, code, gender, active, password, user_type) value (1, 'admin', '管理员', '13800138000', 'admin', 'U', 1, 'ef797c8118f02dfb649607dd5d3f8c7623048c9c063d532cc95c5ed7a898a64f', 1);
 
 
