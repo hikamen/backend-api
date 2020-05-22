@@ -18,6 +18,8 @@ import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
 import java.security.SecureRandom;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author kamen
@@ -142,8 +144,16 @@ public class EncryptUtils {
 
     //-- MD5 --//
 
-    public static String md5Encrypt(String input) {
+    public static String md5(String input) {
         return digest(input, MD5);
+    }
+
+    public static String md5(Map<String, String> map) {
+        String values = map.keySet().stream().sorted().map(k -> k+":"+map.get(k)+"_").collect(Collectors.joining());
+        System.out.println("before: "+ values);
+        String encodedValue =  digest(values, MD5);
+        System.out.println("after : " + encodedValue);
+        return encodedValue;
     }
 
     private static String digest(String input, String algorithm) {

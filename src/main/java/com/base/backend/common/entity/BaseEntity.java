@@ -16,7 +16,7 @@ import java.util.Objects;
  * @author kamen
  */
 @Data
-public class IdEntity implements Serializable {
+public class BaseEntity implements Serializable {
     /**
      * ID
      */
@@ -74,10 +74,11 @@ public class IdEntity implements Serializable {
         if (this == obj) {
             return true;
         }
-        if (!(obj instanceof IdEntity)) {
+        if (!(obj instanceof BaseEntity)) {
             return false;
         }
-        IdEntity entity = (IdEntity) obj;
+        BaseEntity entity = (BaseEntity) obj;
         return getId() != null && Objects.equals(getId(), entity.getId());
     }
+
 }

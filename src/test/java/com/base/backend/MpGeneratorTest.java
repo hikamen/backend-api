@@ -24,7 +24,7 @@ public class MpGeneratorTest {
 
     @Test
     public void generateCode() {
-        generate("", "t_user" );
+        generate("", "t_demo" );
     }
 
     private void generate(String moduleName, String... tableNamesInclude){
@@ -33,7 +33,7 @@ public class MpGeneratorTest {
         // 全局配置
         GlobalConfig gc = new GlobalConfig();
         String projectPath = System.getProperty("user.dir");
-        gc.setOutputDir(projectPath + "/src/main/java2");
+        gc.setOutputDir(projectPath + "/src/main/java");
         gc.setAuthor("Kamen");
         gc.setOpen(false);
         //默认不覆盖，如果文件存在，将不会再生成，配置true就是覆盖
@@ -52,15 +52,17 @@ public class MpGeneratorTest {
         // 包配置
         PackageConfig pc = new PackageConfig();
         pc.setModuleName(moduleName);
-        pc.setParent("com.base.backend.modules");
+        pc.setParent("com.base.backend.modules.demo");
         mpg.setPackageInfo(pc);
 
         // 策略配置
         StrategyConfig strategy = new StrategyConfig();
         strategy.setNaming(NamingStrategy.underline_to_camel);
         strategy.setColumnNaming(NamingStrategy.underline_to_camel);
-        strategy.setSuperEntityClass("com.base.backend.common.entity.IdEntity");
+        strategy.setSuperEntityClass("com.base.backend.common.entity.BaseEntity");
         strategy.setEntityLombokModel(true);
+        strategy.setSuperServiceClass("com.base.backend.common.service.IBaseService");
+        strategy.setSuperServiceImplClass("com.base.backend.common.service.impl.BaseServiceImpl");
         strategy.setSuperControllerClass("com.base.backend.common.controller.BaseController");
         strategy.setInclude(tableNamesInclude);
         strategy.setSuperEntityColumns("id");

@@ -28,7 +28,7 @@ public class ImageUtils {
     /**
      * 水印文字
      */
-    private final static String WATERMARK_TEXT = "鑫日科在线教育股份有限公司";
+    private final static String WATERMARK_TEXT = "样例水印";
     /**
      * 水印
      */

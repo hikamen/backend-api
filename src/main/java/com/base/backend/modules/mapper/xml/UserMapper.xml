@@ -7,10 +7,10 @@
 
     <select id="findPage" resultType="com.base.backend.modules.entity.User">
         select u.* from t_user u where u.deleted_ind = 0
-        <if test="params.queryValue != null and params.queryValue != ''">
-            and (upper(u.username) like concat('%', upper(#{params.queryValue}), '%')
-            or upper(u.name) like concat('%', upper(#{params.queryValue}), '%')
-            or upper(u.phone) like concat('%', upper(#{params.queryValue}), '%')
+        <if test="queryValue != null and queryValue != ''">
+            and (upper(u.username) like concat('%', upper(#{queryValue}), '%')
+            or upper(u.name) like concat('%', upper(#{queryValue}), '%')
+            or upper(u.phone) like concat('%', upper(#{queryValue}), '%')
             )
         </if>
     </select>

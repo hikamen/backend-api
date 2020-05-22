@@ -7,6 +7,8 @@ import com.base.backend.modules.entity.User;
 import com.base.backend.modules.mapper.UserMapper;
 import com.base.backend.modules.service.IUserService;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -20,7 +22,13 @@ import java.util.Optional;
  * @author kamen
  */
 @Service
+@CacheConfig(cacheNames = "users")
 public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implements IUserService {
+
+    @Override
+    public String version() {
+        return "1.0.1";
+    }
 
     @Override
     public Optional<User> findByActiveUsername(String username) {
@@ -41,8 +49,9 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
     }
 
     @Override
+    @Cacheable(key = "#root.methodName +':'+T(com.base.backend.utils.EncryptUtils).md5(#params)")
     public Page<User> selectPage(Page<User> page, Map<String, String> params) {
-        page.setRecords(this.baseMapper.findPage(page, params));
+        page.setRecords(this.baseMapper.findPage(params));
         return page;
     }
 

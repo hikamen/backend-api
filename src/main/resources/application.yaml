@@ -14,19 +14,6 @@ spring:
     active: dev
   jpa:
     open-in-view: false
-#  aop:
-#    proxy-target-class: false
-  redis:
-    host: 39.97.251.229
-    port: 16379
-    password: Redis!@#123
-    database: 1
-    lettuce:
-      pool:
-        maxActive: 2048
-        maxIdle: 200
-        maxWait: 1500ms
-        minIdle: 20
   cache:
     type: generic
 
@@ -43,9 +30,11 @@ logging:
     file: '%d{${LOG_DATEFORMAT_PATTERN:-yyyy-MM-dd HH:mm:ss.SSS}} ${LOG_LEVEL_PATTERN:-%5p} ${PID:- } --- [%t] [%-40.40logger{39}:%line] : %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}'
 
 j2cache:
+  l2-cache-open: true
+  redis-client: lettuce
   open-spring-cache: true
-  allow-null-values: true
-  config-location: /j2cache/j2cache-${spring.profiles.active}.properties
+  allow-null-values: false
+  config-location: /j2cache-${spring.profiles.active}.properties
 #  缓存清除模式
 #  active:主动清除，二级缓存过期主动通知各节点清除，优点在于所有节点可以同时收到缓存清除
 #  passive:被动清除，一级缓存过期进行通知各节点清除一二级缓存
@@ -56,7 +45,7 @@ j2cache:
 mybatis-plus:
 # 如果是放在src/main/java目录下 classpath:/com/yourpackage/*/mapper/*Mapper.xml
 # 如果是放在resource目录 classpath:/mapper/*Mapper.xml
-  mapperLocations: classpath:/mapper/*Mapper.xml
+  mapperLocations: classpath*:/com/base/backend/modules/**/*Mapper.xml
 #实体扫描，多个package用逗号或者分号分隔
   typeAliasesPackage: com.base.backend.modules.entity
   typeEnumsPackage: com.base.backend.modules.enums
