@@ -1,6 +1,5 @@
 package com.base.backend.modules.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.base.backend.common.service.impl.BaseServiceImpl;
 import com.base.backend.modules.entity.User;
@@ -8,7 +7,6 @@ import com.base.backend.modules.mapper.UserMapper;
 import com.base.backend.modules.service.IUserService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -26,31 +24,25 @@ import java.util.Optional;
 public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implements IUserService {
 
     @Override
-    public String version() {
-        return "1.0.1";
-    }
-
-    @Override
     public Optional<User> findByActiveUsername(String username) {
         User param = new User();
         param.setUsername(username);
         param.setActive(1);
-        return Optional.of(this.getOne(new QueryWrapper<>(param)));
+        return Optional.of(this.selectOne(param));
     }
 
     private Optional<User> findByUsername(String username) {
         if (StringUtils.isNotBlank(username)) {
             User param = new User();
             param.setUsername(username);
-            return Optional.of(this.getOne(new QueryWrapper<>(param)));
+            return Optional.of(this.selectOne(param));
         } else {
             return Optional.empty();
         }
     }
 
     @Override
-    @Cacheable(key = "#root.methodName +':'+T(com.base.backend.utils.EncryptUtils).md5(#params)")
-    public Page<User> selectPage(Page<User> page, Map<String, String> params) {
+    public Page<User> findPage(Page<User> page, Map<String, String> params) {
         page.setRecords(this.baseMapper.findPage(params));
         return page;
     }

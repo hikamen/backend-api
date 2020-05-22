@@ -18,7 +18,7 @@ public interface IUserService extends IBaseService<User> {
 
     Optional<User> findByActiveUsername(String username);
 
-    Page<User> selectPage(Page<User> page, Map<String, String> params);
+    Page<User> findPage(Page<User> page, Map<String, String> params);
 
     boolean exist(User user, String value);
 }

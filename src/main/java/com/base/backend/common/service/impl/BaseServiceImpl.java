@@ -5,14 +5,15 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.base.backend.common.entity.BaseEntity;
 import com.base.backend.common.service.IBaseService;
+import com.base.backend.common.service.ProxySelfService;
 import lombok.extern.slf4j.Slf4j;
 import net.oschina.j2cache.CacheChannel;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -20,9 +21,10 @@ import java.time.LocalDateTime;
  */
 @Slf4j
 @CacheConfig(cacheNames = "default")
-public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> extends ServiceImpl<M, T> implements IBaseService<T> {
+public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity>
+        extends ServiceImpl<M, T> implements IBaseService<T>, ProxySelfService<IBaseService<T>> {
     @Autowired
-    private CacheChannel cacheChannel;
+    protected CacheChannel cacheChannel;
 
     @Override
     public String version() {
@@ -30,6 +32,7 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> exte
     }
 
     @Override
+    @CacheEvict(keyGenerator = "cacheKeyGenerator", condition = "#entity.id > 0")
     public void save(T entity, Long userId) {
         try {
             if (isValidEntityId(entity)) {
@@ -39,7 +42,6 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> exte
             } else {
                 FieldUtils.writeField(entity, "createdBy", userId, true);
                 FieldUtils.writeField(entity, "createdTime", LocalDateTime.now(), true);
-                this.updateById(entity);
                 entity.setId(null);
                 this.save(entity);
             }
@@ -49,17 +51,40 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity> exte
     }
 
     @Override
-    @Cacheable(keyGenerator = "cacheKeyGenerator", condition = "#cacheable == true")
-    public T getById(Serializable id, boolean cacheable) {
-        return super.getById(id);
+    @CacheEvict(keyGenerator = "cacheKeyGenerator")
+    public boolean removeById(Long id) {
+        if (id != null && id > 0) {
+            return super.removeById(id);
+        }
+        return false;
     }
 
     @Override
-    @Cacheable(keyGenerator = "cacheKeyGenerator", condition = "#cacheable == true")
-    public T getOne(T entity, boolean cacheable) {
-        QueryWrapper<T> queryWrapper = new QueryWrapper<>(entity);
-        return super.getOne(queryWrapper);
+    @Cacheable(keyGenerator = "cacheKeyGenerator")
+    public T selectById(Long id) {
+        return this.getById(id);
     }
+
+    @Override
+    @Cacheable(keyGenerator = "cacheKeyGenerator")
+    public Long selectIdByOne(T entity) {
+        QueryWrapper<T> queryWrapper = new QueryWrapper<>(entity, "id");
+        T t = this.getOne(queryWrapper);
+        if (t != null) {
+            return t.getId();
+        }
+        return null;
+    }
+
+    @Override
+    public T selectOne(T entity) {
+        Long id = getInstance().selectIdByOne(entity);
+        if (id != null && id > 0) {
+            return getInstance().selectById(id);
+        }
+        return null;
+    }
+
 
     @Override
     public boolean isValidId(Long id) {

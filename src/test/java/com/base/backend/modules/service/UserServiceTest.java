@@ -9,7 +9,7 @@ public class UserServiceTest extends BaseTest {
     IUserService userService;
 
     @Test
-    public void getByIdTest() {
-        userService.getById(1, true);
+    public void selectByIdTest() {
+        System.out.println(userService.selectById(1L));;
     }
 }

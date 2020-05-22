@@ -3,8 +3,6 @@ package com.base.backend.common.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.base.backend.common.entity.BaseEntity;
 
-import java.io.Serializable;
-
 /**
  * @author kamen
  */
@@ -17,9 +15,13 @@ public interface IBaseService<T extends BaseEntity> extends IService<T> {
 
     void save(T t, Long userId);
 
-    T getById(Serializable id, boolean cacheable);
+    boolean removeById(Long id);
 
-    T getOne(T entity, boolean cacheable);
+    T selectById(Long id);
+
+    Long selectIdByOne(T entity);
+
+    T selectOne(T entity);
 
     boolean isValidId(Long id);
 

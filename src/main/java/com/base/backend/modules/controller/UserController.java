@@ -30,7 +30,7 @@ public class UserController extends BaseController {
     public User get(@PathVariable(required = false) Long id) {
         User user;
         if (id != null && id > 0) {
-            user = userService.getById(id);
+            user = userService.selectById(id);
         } else {
             user = new User();
         }
@@ -39,7 +39,7 @@ public class UserController extends BaseController {
 
     @GetMapping("/page")
     public WebApiResponse<Page<User>> page(Page<User> page, WebRequestContext requestContext) {
-        page = userService.selectPage(page, requestContext.getParams());
+        page = userService.findPage(page, requestContext.getParams());
         return WebApiResponse.success(page);
     }
 

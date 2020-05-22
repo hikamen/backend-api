@@ -8,6 +8,7 @@ import com.base.backend.modules.enums.UserTypeEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 
 import java.time.LocalDateTime;
@@ -23,6 +24,7 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
 @TableName("t_user")
+@ToString(callSuper = true)
 public class User extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
