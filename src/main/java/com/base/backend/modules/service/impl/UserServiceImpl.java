@@ -6,7 +6,6 @@ import com.base.backend.modules.entity.User;
 import com.base.backend.modules.mapper.UserMapper;
 import com.base.backend.modules.service.IUserService;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -20,7 +19,6 @@ import java.util.Optional;
  * @author kamen
  */
 @Service
-@CacheConfig(cacheNames = "users")
 public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implements IUserService {
 
     @Override
@@ -62,5 +60,9 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
             }
         }
         return isExist;
+    }
+
+    @Override
+    public void cleanCache() {
     }
 }

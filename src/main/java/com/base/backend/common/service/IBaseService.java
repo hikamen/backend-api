@@ -26,4 +26,6 @@ public interface IBaseService<T extends BaseEntity> extends IService<T> {
     boolean isValidId(Long id);
 
     boolean isValidEntityId(BaseEntity idEntity);
+
+    void cleanCache();
 }

@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
  */
 @Slf4j
 @CacheConfig(cacheNames = "default")
-public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity>
+public abstract class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity>
         extends ServiceImpl<M, T> implements IBaseService<T>, ProxySelfService<IBaseService<T>> {
     @Autowired
     protected CacheChannel cacheChannel;
@@ -45,13 +45,14 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity>
                 entity.setId(null);
                 this.save(entity);
             }
+            getInstance().cleanCache();
         } catch (IllegalAccessException e) {
             log.info("Unable to set value to common fields like 'createdBy', 'updatedBy'");
         }
     }
 
     @Override
-    @CacheEvict(keyGenerator = "cacheKeyGenerator")
+    @CacheEvict(keyGenerator = "cacheKeyGenerator", condition = "#id > 0")
     public boolean removeById(Long id) {
         if (id != null && id > 0) {
             return super.removeById(id);
@@ -84,7 +85,6 @@ public class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity>
         }
         return null;
     }
-
 
     @Override
     public boolean isValidId(Long id) {
