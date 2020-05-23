@@ -13,6 +13,7 @@ import net.oschina.j2cache.CacheChannel;
 import net.oschina.j2cache.CacheObject;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -27,6 +28,11 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEnt
     public static final String DEFAULT_REGION = "default";
     @Autowired
     protected CacheChannel cacheChannel;
+    /**
+     * 注入J2Cache生成的RedisTemplate，可进行redis多种数据结构的操作
+     */
+    @Autowired
+    protected RedisTemplate<String, Serializable> j2CacheRedisTemplate;
 
     @Override
     public String version() {

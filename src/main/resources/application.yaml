@@ -16,7 +16,17 @@ spring:
     open-in-view: false
   cache:
     type: generic
-
+#  redis:
+#    host: 39.97.251.229
+#    port: 16379
+#    password: Redis!@#123
+#    database: 0
+#    lettuce:
+#      pool:
+#        maxActive: 2048
+#        maxIdle: 200
+#        maxWait: 1500ms
+#        minIdle: 20
 server:
   port: 8082
   undertow:
