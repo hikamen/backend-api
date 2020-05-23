@@ -9,7 +9,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
@@ -23,13 +24,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringJUnitWebConfig
 public class UserControllerTest {
     MockMvc mockMvc;
-
-    String token = "eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiIzMmUxN2FjNS1mNDU4LTQ0NTAtODc5Yi0yZDk2N2I3NzE1YjYiLCJzdWIiOiJhZG1pbiIsImlhdCI6MTU4OTcwMDQ5MSwiZXhwIjoxNTg5Nzg2ODkxfQ.y4Aua7g9wtfuXH49oQQ_tfbRHcaVeZFkeRQIscxQIwzV0Q8iQB0A8kQM8aCrLbmf0d2BAtSB1EeAZLiUsC6exQ";
+    String token = "eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiJmNTAwYzAyMS0wZmU2LTQ1NGUtODAyOC1iMTRhMzBlNzVkMzciLCJzdWIiOiJhZG1pbiIsImlhdCI6MTU5MDE5MzIwNCwiZXhwIjoxNTkwMjc5NjA0fQ.6knE7gtHjiFXKqTxqBFCoONRvowwZTULcUEgYtA9csDc8toc-QSvHV7IRRj_18LJabZt4Mh00YnWtWEYTsr73Q";
+    private String password = "ZWY3OTdjODExOGYwMmRmYjY0OTYwN2RkNWQzZjhjNzYyMzA0OGM5YzA2M2Q1MzJjYzk1YzVlZDdhODk4YTY0Zg=";
 
     @BeforeEach
     void setup(WebApplicationContext wac) {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+    }
 
+    @Test
+    public void loginTest() throws Exception {
+        this.mockMvc.perform(post("/login").accept(MediaType.APPLICATION_JSON).param("username", "admin").param("password", password)).andExpect(status().isOk()).andExpect(jsonPath("$.code").value(0));
     }
 
     @Test

@@ -6,23 +6,25 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.base.backend.common.entity.BaseEntity;
 import com.base.backend.common.service.IBaseService;
 import com.base.backend.common.service.ProxySelfService;
+import com.base.backend.utils.EncryptUtils;
+import com.base.backend.utils.GenericsUtils;
 import lombok.extern.slf4j.Slf4j;
 import net.oschina.j2cache.CacheChannel;
+import net.oschina.j2cache.CacheObject;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 /**
  * @author kamen
  */
 @Slf4j
-@CacheConfig(cacheNames = "default")
 public abstract class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEntity>
         extends ServiceImpl<M, T> implements IBaseService<T>, ProxySelfService<IBaseService<T>> {
+    public static final String DEFAULT_REGION = "default";
     @Autowired
     protected CacheChannel cacheChannel;
 
@@ -31,14 +33,18 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEnt
         return "1.0.0";
     }
 
+    protected String getCacheKey(Serializable key) {
+        return GenericsUtils.getSuperClassGenricType(this.getClass(), 1).getSimpleName() + ":" + version() + ":" + key;
+    }
+
     @Override
-    @CacheEvict(keyGenerator = "cacheKeyGenerator", condition = "#entity.id > 0")
     public void save(T entity, Long userId) {
         try {
             if (isValidEntityId(entity)) {
                 FieldUtils.writeField(entity, "updatedBy", userId, true);
                 FieldUtils.writeField(entity, "updatedTime", LocalDateTime.now(), true);
                 this.updateById(entity);
+                cacheChannel.evict(DEFAULT_REGION, getCacheKey(entity.getId()));
             } else {
                 FieldUtils.writeField(entity, "createdBy", userId, true);
                 FieldUtils.writeField(entity, "createdTime", LocalDateTime.now(), true);
@@ -52,38 +58,47 @@ public abstract class BaseServiceImpl<M extends BaseMapper<T>, T extends BaseEnt
     }
 
     @Override
-    @CacheEvict(keyGenerator = "cacheKeyGenerator", condition = "#id > 0")
     public boolean removeById(Long id) {
         if (id != null && id > 0) {
+            cacheChannel.evict(DEFAULT_REGION, getCacheKey(id));
             return super.removeById(id);
         }
         return false;
     }
 
     @Override
-    @Cacheable(keyGenerator = "cacheKeyGenerator")
     public T selectById(Long id) {
-        return this.getById(id);
+        CacheObject cacheObject = cacheChannel.get(DEFAULT_REGION, getCacheKey(id));
+        if (cacheObject.getValue() != null) {
+            return (T) cacheObject.getValue();
+        }
+        T t = this.getById(id);
+        if (t != null) {
+            cacheChannel.set(DEFAULT_REGION, getCacheKey(id), t);
+        }
+        return t;
     }
 
     @Override
-    @Cacheable(keyGenerator = "cacheKeyGenerator")
-    public Long selectIdByOne(T entity) {
+    public Optional<Long> selectIdByOne(T entity) {
+        String key = getCacheKey(EncryptUtils.md5(entity.toString()));
+        CacheObject cacheObject = cacheChannel.get(DEFAULT_REGION, key);
+        if (cacheObject.getValue() != null) {
+            return Optional.of((Long) cacheObject.getValue());
+        }
         QueryWrapper<T> queryWrapper = new QueryWrapper<>(entity, "id");
         T t = this.getOne(queryWrapper);
         if (t != null) {
-            return t.getId();
+            cacheChannel.set(DEFAULT_REGION, key, t.getId());
+            return Optional.of(t.getId());
         }
-        return null;
+        return Optional.empty();
     }
 
     @Override
-    public T selectOne(T entity) {
-        Long id = getInstance().selectIdByOne(entity);
-        if (id != null && id > 0) {
-            return getInstance().selectById(id);
-        }
-        return null;
+    public Optional<T> selectOne(T entity) {
+        Optional<Long> id = this.selectIdByOne(entity);
+        return id.map(this::selectById);
     }
 
     @Override

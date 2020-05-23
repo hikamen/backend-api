@@ -8,8 +8,10 @@ import com.base.backend.modules.service.IUserService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -26,14 +28,14 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
         User param = new User();
         param.setUsername(username);
         param.setActive(1);
-        return Optional.of(this.selectOne(param));
+        return this.selectOne(param);
     }
 
     private Optional<User> findByUsername(String username) {
         if (StringUtils.isNotBlank(username)) {
             User param = new User();
             param.setUsername(username);
-            return Optional.of(this.selectOne(param));
+            return this.selectOne(param);
         } else {
             return Optional.empty();
         }
@@ -41,7 +43,11 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
 
     @Override
     public Page<User> findPage(Page<User> page, Map<String, String> params) {
-        page.setRecords(this.baseMapper.findPage(params));
+        List<Long> ids = this.baseMapper.findPage(page, params);
+        if (ids != null) {
+            List<User> records = ids.parallelStream().map(this::selectById).collect(Collectors.toList());
+            page.setRecords(records);
+        }
         return page;
     }
 

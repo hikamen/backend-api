@@ -19,4 +19,8 @@ import org.springframework.stereotype.Service;
 @CacheConfig(cacheNames = "demos")
 public class DemoServiceImpl extends BaseServiceImpl<DemoMapper, Demo> implements IDemoService {
 
+    @Override
+    public void cleanCache() {
+
+    }
 }

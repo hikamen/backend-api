@@ -3,6 +3,8 @@ package com.base.backend.common.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.base.backend.common.entity.BaseEntity;
 
+import java.util.Optional;
+
 /**
  * @author kamen
  */
@@ -19,9 +21,9 @@ public interface IBaseService<T extends BaseEntity> extends IService<T> {
 
     T selectById(Long id);
 
-    Long selectIdByOne(T entity);
+    Optional<Long> selectIdByOne(T entity);
 
-    T selectOne(T entity);
+    Optional<T> selectOne(T entity);
 
     boolean isValidId(Long id);
 

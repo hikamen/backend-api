@@ -1,10 +1,9 @@
 package com.base.backend.modules.demo.controller;
 
 
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.stereotype.Controller;
 import com.base.backend.common.controller.BaseController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * <p>
@@ -15,7 +14,7 @@ import com.base.backend.common.controller.BaseController;
  * @since 2020-05-22
  */
 @Controller
-@RequestMapping("/demo")
+@RequestMapping("/api/demo")
 public class DemoController extends BaseController {
 
 }

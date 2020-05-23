@@ -5,12 +5,12 @@
     <!-- 开启二级缓存 -->
     <!--<cache type="org.mybatis.caches.ehcache.LoggingEhcache"/>-->
 
-    <select id="findPage" resultType="com.base.backend.modules.entity.User">
-        select u.* from t_user u where u.deleted_ind = 0
-        <if test="queryValue != null and queryValue != ''">
-            and (upper(u.username) like concat('%', upper(#{queryValue}), '%')
-            or upper(u.name) like concat('%', upper(#{queryValue}), '%')
-            or upper(u.phone) like concat('%', upper(#{queryValue}), '%')
+    <select id="findPage" resultType="Long">
+        select u.id from t_user u where u.deleted_ind = 0
+        <if test="p.queryValue != null and p.queryValue != ''">
+            and (upper(u.username) like concat('%', upper(#{p.queryValue}), '%')
+            or upper(u.name) like concat('%', upper(#{p.queryValue}), '%')
+            or upper(u.phone) like concat('%', upper(#{p.queryValue}), '%')
             )
         </if>
     </select>
