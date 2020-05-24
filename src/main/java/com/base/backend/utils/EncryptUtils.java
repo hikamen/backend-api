@@ -54,6 +54,10 @@ public class EncryptUtils {
         return Base64.encodeBase64String(input);
     }
 
+    public static String encodeBase64Url(String input) {
+        return Base64.encodeBase64URLSafeString(input.getBytes());
+    }
+
     public static String decodeBase64(String input) {
         return decodeBase64(input.getBytes());
     }
@@ -311,6 +315,8 @@ public class EncryptUtils {
     public static void main(String[] args) {
         String shaStr = Hashing.sha256().hashString("12345678", UTF8).toString();
         System.out.println(shaStr);
-        System.out.println(EncryptUtils.encodeBase64(shaStr));
+        String encodeStr = EncryptUtils.encodeBase64Url(shaStr);
+        System.out.println(encodeStr);
+        System.out.println(EncryptUtils.decodeBase64(encodeStr));
     }
 }

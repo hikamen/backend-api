@@ -20,7 +20,7 @@ import java.util.Optional;
  * @author kamen
  */
 @RestController
-@RequestMapping("/")
+@RequestMapping("/api")
 public class LoginController extends BaseController {
 
     @Autowired

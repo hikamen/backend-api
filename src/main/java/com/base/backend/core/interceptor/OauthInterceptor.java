@@ -1,6 +1,12 @@
 package com.base.backend.core.interceptor;
 
+import com.base.backend.common.Constants;
+import com.base.backend.modules.entity.User;
 import com.base.backend.modules.service.IUserService;
+import com.base.backend.utils.JwtUtils;
+import com.base.backend.utils.StringUtils;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +14,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Optional;
 
 /**
  * @author kamen
@@ -21,8 +28,7 @@ public class OauthInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse httpServletResponse, Object o) throws Exception {
-        return true;
-        /*if ("OPTIONS".equals(request.getMethod())) {
+        if ("OPTIONS".equals(request.getMethod())) {
             return true;
         }
         if (request.getHeader(Constants.AUTHORIZATION) == null) {
@@ -45,6 +51,6 @@ public class OauthInterceptor implements HandlerInterceptor {
             logger.error(e.getMessage());
         }
         httpServletResponse.sendError(HttpServletResponse.SC_FORBIDDEN);
-        return false;*/
+        return false;
     }
 }
