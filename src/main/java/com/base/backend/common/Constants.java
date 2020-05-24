@@ -27,7 +27,6 @@ public class Constants {
 
 
     public static final String AUTHORIZATION = "x-access-token";
-    public static final int TOKEN_EXPIRATION_TIME = 60 * 24 * 1;
-    public static final String JWT_KEY = "Warehouse";
+    public static final int TOKEN_EXPIRATION_TIME = 60 * 24;
     public static final String LOGIN_USER_ID = "LOGIN_USER_ID";
 }
